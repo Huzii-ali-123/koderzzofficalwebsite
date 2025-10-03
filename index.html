@@ -14,6 +14,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
     
     <style>
+          #backToTopBtn {
+        background-color: var(--color-primary-dark);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        cursor: pointer;
+    }
+    
+    /* Progress Circle Logic (Circumference of r=18 is ~113.1) */
+    #scrollProgressCircle {
+        transform: rotate(-90deg); /* Start the circle fill from the top */
+        transform-origin: 50% 50%;
+    }
         /* Define the custom font families */
         .font-playfair {
             font-family: 'Playfair Display', serif;
@@ -62,6 +73,36 @@
     </style>
 
     <script>
+        // Add this Scroll Progress function inside your <script> block
+function updateScrollProgress() {
+    const totalHeight = document.body.scrollHeight - window.innerHeight;
+    const scrollPosition = window.scrollY;
+    const scrollPercentage = scrollPosition / totalHeight;
+    const circumference = 113.1; // Matches the SVG circle's circumference (2 * pi * 18)
+    const offset = circumference - (scrollPercentage * circumference);
+
+    const progressCircle = document.getElementById('scrollProgressCircle');
+    const backToTopBtn = document.getElementById('backToTopBtn');
+    
+    if (progressCircle) {
+        progressCircle.style.strokeDashoffset = offset;
+    }
+
+    // Show/Hide the button logic
+    if (scrollPosition > 200) { // Show button after scrolling down 200px
+        backToTopBtn.classList.remove('opacity-0', 'invisible');
+        backToTopBtn.classList.add('opacity-100', 'visible');
+    } else {
+        backToTopBtn.classList.remove('opacity-100', 'visible');
+        backToTopBtn.classList.add('opacity-0', 'invisible');
+    }
+}
+
+// Attach the function to the scroll event
+document.addEventListener('scroll', updateScrollProgress);
+
+// Call it once on load to set the initial state
+document.addEventListener('DOMContentLoaded', updateScrollProgress);
         // Custom Tailwind config for the provided logo colors
         tailwind.config = {
             theme: {
@@ -664,6 +705,15 @@ Please provide the next steps. My project is about: [ENTER YOUR PROJECT DETAILS 
             &copy; 2024 Koderzz . All rights reserved.
         </div>
     </footer>
-
+<a id="backToTopBtn" href="#home" class="fixed right-6 bottom-6 md:right-10 md:bottom-10 z-50 p-3 rounded-full shadow-2xl transition-opacity duration-300 opacity-0 invisible" aria-label="Back to Top" title="Back to Top">
+    <svg width="40" height="40" viewBox="0 0 40 40" class="transform rotate-90">
+        <circle cx="20" cy="20" r="18" fill="none" stroke="#333333" stroke-width="4" />
+        <circle id="scrollProgressCircle" cx="20" cy="20" r="18" fill="none" stroke="#C89ECF" stroke-width="4" stroke-dasharray="113.1" stroke-dashoffset="113.1" stroke-linecap="round" style="transition: stroke-dashoffset 0.15s linear;" />
+    </svg>
+    <svg class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-koderzz-light" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="19" x2="12" y2="5"></line>
+        <polyline points="5 12 12 5 19 12"></polyline>
+    </svg>
+</a>
 </body>
 </html>
