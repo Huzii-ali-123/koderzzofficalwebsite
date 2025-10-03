@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koderzz Agency | Digital Innovation, Web & Mobile Development</title>
+    <link rel="icon" href="logo/koderzz-high-resolution-logo-transparent.png">
+    <meta name="description" content="Koderzz is a boutique agency specializing in high-performance web, mobile, and AI solutions. We engineer digital success for ambitious businesses.">
+    <meta name="keywords" content="web development, mobile app development, custom software, MERN stack, React, Next.js, AI integration, Koderzz agency">
+    <meta name="author" content="Koderzz Agency">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="Icon" href="koderzz-high-resolution-logo-transparent.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Define the custom font families */
+        .font-playfair {
+            font-family: 'Playfair Display', serif;
+        }
+        .font-inter {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Custom Tailwind Configuration (matching the logo colors) */
+        :root {
+            --color-primary-dark: #1A1A1A; /* Deep Charcoal Black */
+            --color-text-light: #FFFFFF;   /* Pure white text for contrast */
+            --color-accent-yellow: #F5F2D9;
+            --color-accent-mauve: #C89ECF;
+        }
+
+        /* Custom Styles for the Hero Gradient */
+   /* Custom Styles for the Hero Gradient */
+.hero-gradient-bg {
+    /* Applied to text that should show the gradient effect */
+    background: linear-gradient(135deg, var(--color-accent-mauve) 0%, var(--color-accent-yellow) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    /* color: transparent;  <-- REMOVE THIS LINE */
+    display: inline-block;
+}
+        /* Custom styles for professional glass/card effect */
+        .glass-card {
+            background-color: rgba(50, 50, 50, 0.2); /* Subtle transparent charcoal */
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.15); /* Slightly less border contrast */
+        }
+
+        /* Smooth scrolling behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Pricing Card Checkmark */
+        .check-icon {
+            color: #C89ECF; /* koderzz-mauve */
+            margin-right: 0.75rem;
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+    </style>
+
+    <script>
+        // Custom Tailwind config for the provided logo colors
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'koderzz-dark': 'var(--color-primary-dark)',
+                        'koderzz-light': 'var(--color-text-light)',
+                        'koderzz-yellow': 'var(--color-accent-yellow)',
+                        'koderzz-mauve': 'var(--color-accent-mauve)',
+                        'koderzz-accent-bg': 'rgba(30, 30, 30, 0.8)', // Semi-transparent Charcoal for section background
+                    },
+                }
+            }
+        }
+
+        // ---------------------------------------------
+        // JAVASCRIPT FOR MOBILE MENU TOGGLE AND OVERLAY
+        // ---------------------------------------------
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const button = document.getElementById('mobile-menu-button');
+            const overlay = document.getElementById('mobile-menu-overlay');
+
+            // Toggle the 'hidden' class on both the menu and the overlay
+            menu.classList.toggle('hidden');
+            overlay.classList.toggle('hidden'); 
+
+            // Optional: Toggle icon state (hamburger <-> X)
+            const icon = button.querySelector('svg');
+            if (menu.classList.contains('hidden')) {
+                // Menu is closed, show hamburger icon
+                icon.innerHTML = '<line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>';
+            } else {
+                // Menu is open, show X icon
+                icon.innerHTML = '<line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>';
+            }
+        }
+
+        // ---------------------------------------------
+        // JAVASCRIPT FUNCTION FOR PLAN SELECTION
+        // ---------------------------------------------
+        function selectPlan(planName, planPrice, planDetails) {
+            const messageField = document.getElementById('message');
+            const messageContent = `I am interested in the "${planName}" package, priced at ${planPrice}. 
+            
+The package details I saw were:
+- ${planDetails.join('\n- ')}
+
+Please provide the next steps. My project is about: [ENTER YOUR PROJECT DETAILS HERE]`;
+            
+            // Populate the message field
+            messageField.value = messageContent.trim();
+            
+            // Scroll to the contact form
+            document.getElementById('contact').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+
+        // JavaScript for Smooth Scrolling Navigation and Observer
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('a[href^="#"]');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    const targetHref = this.getAttribute('href');
+                    
+                    // If a link is clicked, close the mobile menu
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                         toggleMobileMenu(); // This closes the menu and the overlay
+                    }
+                    
+                    // Only attempt smooth scroll if the href is not just "#"
+                    if (targetHref && targetHref.length > 1) {
+                         e.preventDefault();
+                         document.querySelector(targetHref).scrollIntoView({
+                             behavior: 'smooth'
+                         });
+                    } else if (targetHref === '#') {
+                         e.preventDefault(); 
+                    }
+                });
+            });
+
+            // Attach the toggle function to the hamburger button
+            const menuButton = document.getElementById('mobile-menu-button');
+            if (menuButton) {
+                menuButton.addEventListener('click', toggleMobileMenu);
+            }
+
+            // Intersection Observer for animation on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('opacity-100', 'translate-y-0');
+                    }
+                });
+            }, {
+                threshold: 0.1 // Trigger when 10% of the item is visible
+            });
+
+            document.querySelectorAll('.animate-on-scroll').forEach(element => {
+                // Set initial state for animation
+                element.classList.add('opacity-0', 'translate-y-10', 'transition', 'duration-1000');
+                observer.observe(element);
+            });
+        });
+    </script>
+</head>
+
+<body class="bg-koderzz-dark text-koderzz-light font-inter">
+
+    <header class="sticky top-0 z-50 bg-koderzz-dark/95 backdrop-blur-md shadow-lg border-b border-koderzz-accent-bg">
+        <nav class="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex justify-between items-center">
+            <a href="#home" class="text-3xl font-playfair font-bold text-koderzz-light tracking-wide">
+                Koderzz<span class="text-koderzz-mauve">.</span>
+            </a>
+            <div class="hidden md:flex space-x-8 text-lg">
+                <a href="#services" class="hover:text-koderzz-yellow transition duration-300">Services</a>
+                <a href="#process" class="hover:text-koderzz-yellow transition duration-300">Process</a>
+                <a href="#portfolio" class="hover:text-koderzz-yellow transition duration-300">Work</a>
+                <a href="#pricing" class="hover:text-koderzz-yellow transition duration-300">Pricing</a>
+                <a href="#contact" class="hover:text-koderzz-yellow transition duration-300">Contact</a>
+            </div>
+            <a href="#contact" class="hidden md:block px-6 py-2 rounded-full font-semibold transition duration-300 transform 
+                bg-koderzz-mauve hover:bg-koderzz-yellow hover:text-koderzz-light text-koderzz-dark shadow-lg">
+                Start a Project
+            </a>
+            <button id="mobile-menu-button" class="md:hidden text-koderzz-light text-2xl z-50">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+        </nav>
+        
+        <div id="mobile-menu" class="hidden md:hidden absolute w-full bg-koderzz-dark/95 backdrop-blur-lg border-b border-koderzz-accent-bg py-4 shadow-xl">
+            <div class="flex flex-col items-center space-y-4 text-xl">
+                <a href="#services" class="hover:text-koderzz-yellow transition duration-300 w-full text-center py-2">Services</a>
+                <a href="#process" class="hover:text-koderzz-yellow transition duration-300 w-full text-center py-2">Process</a>
+                <a href="#portfolio" class="hover:text-koderzz-yellow transition duration-300 w-full text-center py-2">Work</a>
+                <a href="#pricing" class="hover:text-koderzz-yellow transition duration-300 w-full text-center py-2">Pricing</a>
+                <a href="#contact" class="hover:text-koderzz-yellow transition duration-300 w-full text-center py-2">Contact</a>
+                <a href="#contact" class="mt-4 px-6 py-2 rounded-full font-semibold transition duration-300 transform 
+                    bg-koderzz-mauve hover:bg-koderzz-yellow hover:text-koderzz-dark text-koderzz-dark shadow-lg w-4/5 text-center">
+                    Start a Project
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div id="mobile-menu-overlay" 
+         class="hidden fixed inset-0 z-40 md:hidden bg-koderzz-dark/40 backdrop-blur-sm"
+         onclick="toggleMobileMenu()">
+    </div>
+
+    <main>
+        <section id="home" class="relative overflow-hidden pt-20 pb-32 md:pt-40 md:pb-56 text-center">
+            <div class="max-w-4xl mx-auto px-6 lg:px-8 relative z-10">
+                <h1 class="text-6xl md:text-8xl font-playfair font-bold leading-tight mb-6">
+                    We <span class="">Engineer Digital</span> Success.
+                </h1>
+                <p class="text-xl md:text-2xl text-koderzz-light/80 mb-10 max-w-2xl mx-auto">
+                    A boutique agency crafting highly scalable web and mobile solutions with a focus on elegant design and robust architecture.
+                </p>
+                <div class="flex justify-center space-x-4">
+                    <a href="#services" class="px-8 py-3 rounded-lg font-bold text-lg transition duration-300 transform 
+                        bg-koderzz-mauve hover:bg-koderzz-yellow hover:scale-105 text-koderzz-dark shadow-xl">
+                        Explore Services
+                    </a>
+                    <a href="#portfolio" class="px-8 py-3 rounded-lg font-bold text-lg glass-card border-koderzz-light/20 
+                        hover:bg-koderzz-accent-bg transition duration-300 transform hover:scale-105">
+                        View Our Work
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="services" class="py-20 md:py-32 bg-koderzz-accent-bg">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="text-center animate-on-scroll delay-0">
+                    <h2 class="text-5xl md:text-6xl font-playfair font-bold mb-4">Our Expertise</h2>
+                    <p class="text-xl text-koderzz-light/70 max-w-3xl mx-auto">
+                        We transform concepts into reality across the full digital spectrum, specializing in high-performance and future-proof solutions.
+                    </p>
+                </div>
+                
+                <div class="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <div class="glass-card p-8 rounded-xl shadow-2xl border-koderzz-light/10 transform hover:scale-[1.02] transition duration-500 animate-on-scroll delay-100">
+                        <div class="text-4xl inline-block mb-4 hero-gradient-bg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="2" y1="12" x2="22" y2="12"></line>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold font-playfair mb-3">Enterprise Web Development</h3>
+                        <p class="text-koderzz-light/80">Building robust, secure, and scalable web applications using modern frameworks like React and Next.js.</p>
+                    </div>
+
+                    <div class="glass-card p-8 rounded-xl shadow-2xl border-koderzz-light/10 transform hover:scale-[1.02] transition duration-500 animate-on-scroll delay-200">
+                         <div class="text-4xl inline-block mb-4 hero-gradient-bg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-smartphone">
+                                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                                <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold font-playfair mb-3">Mobile App Development</h3>
+                        <p class="text-koderzz-light/80">Native and cross-platform mobile apps (iOS/Android) that deliver seamless performance and user experience.</p>
+                    </div>
+                    
+                    <div class="glass-card p-8 rounded-xl shadow-2xl border-koderzz-light/10 transform hover:scale-[1.02] transition duration-500 animate-on-scroll delay-300">
+                        <div class="text-4xl inline-block mb-4 hero-gradient-bg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-cpu">
+                                <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                <rect x="9" y="9" width="6" height="6"></rect>
+                                <line x1="9" y1="1" x2="9" y2="4"></line>
+                                <line x1="15" y1="1" x2="15" y2="4"></line>
+                                <line x1="9" y1="20" x2="9" y2="23"></line>
+                                <line x1="15" y1="20" x2="15" y2="23"></line>
+                                <line x1="20" y1="9" x2="23" y2="9"></line>
+                                <line x1="20" y1="15" x2="23" y2="15"></line>
+                                <line x1="1" y1="9" x2="4" y2="9"></line>
+                                <line x1="1" y1="15" x2="4" y2="15"></line>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold font-playfair mb-3">Data & AI Integration</h3>
+                        <p class="text-koderzz-light/80">Integrating custom machine learning models and data pipelines to unlock new business intelligence.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="process" class="py-20 md:py-32">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="text-center animate-on-scroll delay-0">
+                    <h2 class="text-5xl md:text-6xl font-playfair font-bold mb-4">The Koderzz Approach</h2>
+                    <p class="text-xl text-koderzz-light/70 max-w-3xl mx-auto mb-16">
+                        A structured, agile, and transparent workflow designed to deliver results on time and within budget.
+                    </p>
+                </div>
+
+                <div class="relative flex flex-col items-center">
+                    <div class="absolute hidden md:block w-0.5 bg-koderzz-light/20 h-full left-1/2 transform -translate-x-1/2"></div>
+                    
+                    <div class="flex flex-col md:flex-row w-full mb-12 animate-on-scroll delay-100">
+                        <div class="md:w-1/2 md:pr-12 text-center md:text-right">
+                            <span class="text-4xl font-bold font-bold mt-2">01.</span>
+                            <h3 class="text-3xl font-playfair font-bold mt-2">Discovery & Strategy</h3>
+                            <p class="text-koderzz-light/70 mt-2">We deeply analyze your business goals, target audience, and competitive landscape to define the perfect solution architecture.</p>
+                        </div>
+                        <div class="hidden md:flex md:w-1/2 justify-start items-center relative pl-12">
+                            <div class="w-4 h-4 rounded-full bg-koderzz-mauve absolute -left-2 border-4 border-koderzz-dark"></div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row-reverse w-full mb-12 animate-on-scroll delay-200">
+                        <div class="md:w-1/2 md:pl-12 text-center md:text-left">
+                            <span class="text-4xl font-bold font-bold mt-2">02.</span>
+                            <h3 class="text-3xl font-playfair font-bold mt-2">Design & Prototyping</h3>
+                            <p class="text-koderzz-light/70 mt-2">Creating user flows, wireframes, and high-fidelity mockups. You see and approve the experience before coding begins.</p>
+                        </div>
+                        <div class="hidden md:flex md:w-1/2 justify-end items-center relative pr-12">
+                            <div class="w-4 h-4 rounded-full bg-koderzz-yellow absolute -right-2 border-4 border-koderzz-dark"></div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row w-full mb-12 animate-on-scroll delay-300">
+                        <div class="md:w-1/2 md:pr-12 text-center md:text-right">
+                            <span class="text-4xl font-bold font-bold mt-2">03.</span>
+                            <h3 class="text-3xl font-playfair font-bold mt-2">Agile Development & QA</h3>
+                            <p class="text-koderzz-light/70 mt-2">Iterative development cycles with continuous testing and quality assurance to ensure bug-free, optimized code.</p>
+                        </div>
+                        <div class="hidden md:flex md:w-1/2 justify-start items-center relative pl-12">
+                            <div class="w-4 h-4 rounded-full bg-koderzz-mauve absolute -left-2 border-4 border-koderzz-dark"></div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row-reverse w-full animate-on-scroll delay-400">
+                        <div class="md:w-1/2 md:pl-12 text-center md:text-left">
+                            <span class="text-4xl font-bold font-bold mt-2">04.</span>
+                            <h3 class="text-3xl font-playfair font-bold mt-2">Deployment & Scaling</h3>
+                            <p class="text-koderzz-light/70 mt-2">Seamless launch to market followed by continuous monitoring, maintenance, and strategic scaling support.</p>
+                        </div>
+                        <div class="hidden md:flex md:w-1/2 justify-end items-center relative pr-12">
+                            <div class="w-4 h-4 rounded-full bg-koderzz-yellow absolute -right-2 border-4 border-koderzz-dark"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="portfolio" class="py-20 md:py-32 bg-koderzz-accent-bg">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="text-center animate-on-scroll delay-0">
+                    <h2 class="text-5xl md:text-6xl font-playfair font-bold mb-4">Recent Projects</h2>
+                    <p class="text-xl text-koderzz-light/70 max-w-3xl mx-auto mb-16">
+                        A snapshot of our commitment to quality, creativity, and technical excellence across diverse industries.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    
+                    <div class="glass-card p-6 rounded-xl shadow-2xl transform hover:scale-[1.01] transition duration-500 animate-on-scroll delay-100">
+                        <img style="border-radius: 2%;" src="p1.PNG" alt="project 1">
+                        <h3 class="text-2xl font-playfair font-bold">Virtual PC Builder</h3>
+                        <p class="text-koderzz-light/70 mt-2">A high-performance headless Virtual PC Builder solution built with PHP and a custom API for 5x faster load times.</p>
+                        <span class="inline-block mt-3 text-koderzz-yellow font-semibold text-sm">#WebDev #PHP #MySQL</span>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-xl shadow-2xl transform hover:scale-[1.01] transition duration-500 animate-on-scroll delay-200">
+                       <img style="border-radius: 2%;" src="p2.PNG" alt="">
+                         <h3 class="text-2xl font-playfair font-bold">Hotel Managment System</h3>
+                         <p class="text-koderzz-light/70 mt-2">A HMS Website Created ON MERN Stack which helps guests to book there room easily without physically visiting the Hotel.</p>
+                         <span class="inline-block mt-3 text-koderzz-mauve font-semibold text-sm">#Web #React #MERN</span>
+                    </div>
+                    <div class="glass-card p-6 rounded-xl shadow-2xl transform hover:scale-[1.01] transition duration-500 animate-on-scroll delay-300">
+                         <img style="border-radius: 2%;" src="p3.png" alt="">
+                          <h3 class="text-2xl font-playfair font-bold">Client Porfolio Website</h3>
+                          <p class="text-koderzz-light/70 mt-2">A HMS Website Created ON MERN Stack which helps guests to book there room easily without physically visiting the Hotel.</p>
+                          <span class="inline-block mt-3 text-koderzz-yellow font-semibold text-sm">#Web #HTML #Bootstrap #Tailwind</span>
+                       </div>
+                        <div class="glass-card p-6 rounded-xl shadow-2xl transform hover:scale-[1.01] transition duration-500 animate-on-scroll delay-400">
+                          <img style="border-radius: 2%;" src="o4.PNG" alt="">
+                          <h3 class="text-2xl font-playfair font-bold">Clothing E-commerce Website</h3>
+                          <p class="text-koderzz-light/70 mt-2">A Clothing website made in PHP, MySQL, HTML, CSS, and Tailwind </p>
+                          <span class="inline-block mt-3 text-koderzz-mauve font-semibold text-sm">#Web #HTML #CSS #Tailwind #Ecommerce</span>
+                       </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="testimonials" class="py-20 md:py-32">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="text-center animate-on-scroll delay-0">
+                    <h2 class="text-5xl md:text-6xl font-playfair font-bold mb-4">What Our Clients Say</h2>
+                    <p class="text-xl text-koderzz-light/70 max-w-3xl mx-auto mb-16">
+                        Real-world success stories built on trust, quality, and exceptional development.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    
+                    <div class="glass-card p-6 rounded-xl border-koderzz-light/10 animate-on-scroll delay-100">
+                        <p class="text-koderzz-light/90 italic mb-4">"Koderzz took our complex vision and delivered a clean, scalable app ahead of schedule. Their technical expertise is unmatched."</p>
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-koderzz-mauve rounded-full mr-3 flex items-center justify-center text-koderzz-dark font-bold">S</div>
+                            <div>
+                                <p class="font-semibold text-koderzz-light">Sarah J.</p>
+                                <p class="text-koderzz-light/60 text-sm">CEO, InnovateTech</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-xl border-koderzz-light/10 animate-on-scroll delay-200">
+                        <p class="text-koderzz-light/90 italic mb-4">"The website design was elegant, and the performance speed was exactly what we needed. Highly recommend Koderzz for professional work."</p>
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-koderzz-mauve rounded-full mr-3 flex items-center justify-center text-koderzz-dark font-bold">M</div>
+                            <div>
+                                <p class="font-semibold text-koderzz-light">Mark T.</p>
+                                <p class="text-koderzz-light/60 text-sm">Founder, E-Commerce Startup</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-xl border-koderzz-light/10 animate-on-scroll delay-300">
+                        <p class="text-koderzz-light/90 italic mb-4">"We struggled with platform integration until Koderzz stepped in. They fixed our APIs quickly and provided great ongoing support."</p>
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-koderzz-mauve rounded-full mr-3 flex items-center justify-center text-koderzz-dark font-bold">A</div>
+                            <div>
+                                <p class="font-semibold text-koderzz-light">Amira B.</p>
+                                <p class="text-koderzz-light/60 text-sm">Project Lead, Logistics Firm</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="pricing" class="py-20 md:py-32 bg-koderzz-accent-bg">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="text-center animate-on-scroll delay-0">
+                    <h2 class="text-5xl md:text-6xl font-playfair font-bold mb-4">Pricing & Packages</h2>
+                    <p class="text-xl text-koderzz-light/70 max-w-3xl mx-auto mb-16">
+                        Transparent pricing for websites and portfolio projects. Choose the package that fits your ambition.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                    <div class="glass-card p-8 rounded-xl shadow-2xl border-koderzz-light/10 transform hover:scale-[1.02] transition duration-500 animate-on-scroll delay-100">
+                        <h3 class="text-3xl font-playfair font-bold text-koderzz-yellow mb-2">Starter Kit</h3>
+                        <p class="text-lg text-koderzz-light/70 mb-6">Perfect for basic online presence or personal portfolio.</p>
+                        
+                        <div class="text-5xl font-bold mb-6">
+                            PKR 25K
+                            <span class="text-xl text-koderzz-light/50 font-normal">/ one-time</span>
+                        </div>
+                        
+                        <a href="#contact" 
+                           onclick="selectPlan('Starter Kit', 'PKR 25,000', [
+                               '5-Page Static Website', 
+                               'Basic Responsive Design (Mobile)', 
+                               'Up to 3 Content Sections', 
+                               'Basic Contact Form Integration'
+                           ])"
+                           class="block w-full text-center py-3 rounded-lg font-semibold transition duration-300 bg-koderzz-mauve hover:bg-koderzz-yellow text-koderzz-dark hover:text-koderzz-light shadow-lg mb-6">
+                            Get Started
+                        </a>
+                        
+                        <ul class="space-y-3 text-sm">
+                            <li class="flex items-start"><svg class="check-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>5-Page Static Website</li>
+                            <li class="flex items-start"><svg class="check-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Basic Responsive Design (Mobile)</li>
+                            <li class="flex items-start"><svg class="check-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Up to 3 Content Sections</li>
+                            <li class="flex items-start"><svg class="check-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Basic Contact Form Integration</li>
+                            <li class="flex items-start text-koderzz-light/50"><svg class="check-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>No Custom Backend/CMS</li>
+                        </ul>
+                    </div>
+
+                    <div class="glass-card p-10 rounded-xl shadow-2xl border-koderzz-yellow/50 ring-4 ring-koderzz-yellow/20 transform hover:scale-[1.03] transition duration-500 animate-on-scroll delay-200 bg-koderzz-accent-bg/50">
+                        <h3 class="text-4xl font-playfair font-bold text-koderzz-mauve mb-2">Business Pro</h3>
+                        <p class="text-xl text-koderzz-light/70 mb-6">Ideal for small businesses and service providers needing more features.</p>
+                        
+                        <div class="text-4xl font-bold mb-6">
+                            PKR 35k
+                            <span class="text-xl text-koderzz-light/50 font-normal">/ one-time</span>
+                        </div>
+                        
+                        <a href="#contact" 
+                           onclick="selectPlan('Business Pro', 'PKR 35,000', [
+                               'Up to 10 Pages (e.g., Home, About, Services, Contact)', 
+                               'Full Responsive & Cross-Browser Tested', 
+                               'Advanced Forms (e.g., Newsletter, Quote)', 
+                               'Basic SEO Optimization & Speed Audit',
+                               'Social Media Integration'
+                           ])"
+                           class="block w-full text-center py-3 rounded-lg font-semibold transition duration-300 bg-koderzz-mauve hover:bg-koderzz-yellow text-koderzz-dark hover:text-koderzz-light shadow-lg mb-6">
+                            Choose This Plan
+                        </a>
+                        
+                        <ul class="space-y-4 text-base">
+                            <li class="flex items-start"><svg class="check-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><strong>Up to 5 Pages</strong>(e.g., Home, About, Services, Contact)</li>
+                            <li class="flex items-start"><svg class="check-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Full Responsive & Cross-Browser Tested</li>
+                            <li class="flex items-start"><svg class="check-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Advanced Forms (e.g., Newsletter, Quote)</li>
+                            <li class="flex items-start"><svg class="check-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Basic SEO Optimization & Speed Audit</li>
+                            <li class="flex items-start"><svg class="check-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Social Media Integration</li>
+                        </ul>
+                    </div>
+
+                    <div class="glass-card p-8 rounded-xl shadow-2xl border-koderzz-light/10 transform hover:scale-[1.02] transition duration-500 animate-on-scroll delay-300">
+                        <h3 class="text-3xl font-playfair font-bold text-koderzz-yellow mb-2">Custom Enterprise</h3>
+                        <p class="text-lg text-koderzz-light/70 mb-6">For complex applications, e-commerce, and high-traffic projects.</p>
+                        
+                        <div class="text-5xl font-bold mb-6">
+                            PKR 45K+
+                            <span class="text-xl text-koderzz-light/50 font-normal">/ quote</span>
+                        </div>
+                        
+                        <a href="#contact" 
+                           onclick="selectPlan('Custom Enterprise', 'PKR 45,000+', [
+                               'Unlimited Pages & Custom Features', 
+                               'Custom CMS/Dashboard Integration', 
+                               'E-commerce, Payment & Database Setup', 
+                               'Advanced Security & Performance Optimization',
+                               '60 Days of Free Support & Bug Fixes'
+                           ])"
+                           class="block w-full text-center py-3 rounded-lg font-semibold transition duration-300 bg-koderzz-mauve hover:bg-koderzz-yellow text-koderzz-dark hover:text-koderzz-light shadow-lg mb-6">
+                            Request Quote
+                        </a>
+                        
+                        <ul class="space-y-3 text-sm">
+                            <li class="flex items-start"><svg class="check-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><strong>Unlimited Pages</strong> & Custom Features</li>
+                            <li class="flex items-start"><svg class="check-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Custom CMS/Dashboard Integration</li>
+                            <li class="flex items-start"><svg class="check-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>E-commerce, Payment & Database Setup</li>
+                            <li class="flex items-start"><svg class="check-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Advanced Security & Performance Optimization</li>
+                            <li class="flex items-start"><svg class="check-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><strong>60 Days</strong> of Free Support & Bug Fixes</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <section class="bg-koderzz-mauve py-16">
+            <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+                <h2 class="text-4xl md:text-5xl font-playfair font-bold text-koderzz-dark mb-4">
+                    Ready to Start Your Project?
+                </h2>
+                <p class="text-xl text-koderzz-dark/80 mb-8">
+                    Don't wait to build your digital future. Let's discuss your goals and how we can achieve them.
+                </p>
+                <a href="#contact" class="px-10 py-4 rounded-lg font-bold text-xl transition duration-300 transform 
+                    bg-koderzz-dark hover:bg-koderzz-dark/80 hover:scale-[1.05] text-koderzz-light shadow-2xl">
+                    Get a Free Consultation
+                </a>
+            </div>
+        </section>
+        <section id="contact" class="py-20 md:py-32">
+            <div class="max-w-4xl mx-auto px-6 lg:px-8 animate-on-scroll delay-0">
+                <div class="text-center">
+                    <h2 class="text-5xl md:text-6xl font-playfair font-bold mb-6">Let's Start the Conversation</h2>
+                    <p class="text-xl text-koderzz-light/70 mb-10">
+                        Tell us about your project, timeline, and budget. Our team will respond within 24 hours.
+                    </p>
+                </div>
+                
+                <form 
+                    action="https://formsubmit.co/Huzaifadx780@gmail.com" 
+                    method="POST" 
+                    class="space-y-6 glass-card p-8 rounded-xl border-koderzz-light/10 shadow-2xl"
+                >
+                    <input type="hidden" name="_next" value="https://formsubmit.co/thanks">
+                    
+                    <input type="hidden" name="_captcha" value="false">
+
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-koderzz-light/80 mb-2">Full Name</label>
+                        <input 
+                            type="text" 
+                            name="name" 
+                            id="name" 
+                            placeholder="John Doe" 
+                            required 
+                            class="w-full p-3 rounded-lg text-black bg-white focus:ring-2 focus:ring-koderzz-mauve border-none transition duration-300"
+                        >
+                    </div>
+
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-koderzz-light/80 mb-2">Email Address</label>
+                        <input 
+                            type="email" 
+                            name="email" 
+                            id="email" 
+                            placeholder="work@company.com" 
+                            required 
+                            class="w-full p-3 rounded-lg text-black bg-white focus:ring-2 focus:ring-koderzz-mauve border-none transition duration-300"
+                        >
+                    </div>
+
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-koderzz-light/80 mb-2">Project Details</label>
+                        <textarea 
+                            name="message" 
+                            id="message" 
+                            rows="5" 
+                            placeholder="We need a custom mobile app for our internal logistics..." 
+                            required 
+                            class="w-full p-3 rounded-lg text-black bg-white focus:ring-2 focus:ring-koderzz-mauve border-none transition duration-300"
+                        ></textarea>
+                    </div>
+
+                    <button 
+                        type="submit" 
+                        class="w-full px-10 py-4 rounded-lg font-bold text-xl transition duration-300 transform 
+                        bg-koderzz-mauve hover:bg-koderzz-yellow hover:scale-[1.01] text-koderzz-dark shadow-2xl"
+                    >
+                        SEND INQUIRY
+                    </button>
+                    
+                    <p class="text-xs text-center text-koderzz-light/50 pt-2">
+                        Powered by FormSubmit.io. Your email is sent securely to Huzaifadx780@gmail.com.
+                    </p>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-koderzz-dark border-t border-koderzz-accent-bg py-10">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 text-sm">
+            
+            <div class="col-span-1">
+                <h4 class="text-xl font-playfair font-bold mb-3">Koderzz</h4>
+                <p class="text-koderzz-light/60">Engineering digital excellence since 2024. Your partner in scalable technology.</p>
+            </div>
+            
+            <div>
+                <h4 class="font-semibold mb-3 text-koderzz-yellow">Quick Links</h4>
+                <ul>
+                    <li><a href="#services" class="hover:text-koderzz-light/90 transition">Services</a></li>
+                    <li><a href="#portfolio" class="hover:text-koderzz-light/90 transition">Portfolio</a></li>
+                    <li><a href="#process" class="hover:text-koderzz-light/90 transition">Our Process</a></li>
+                    <li><a href="#pricing" class="hover:text-koderzz-light/90 transition">Pricing</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="font-semibold mb-3 text-koderzz-yellow">Contact & Legal</h4>
+                <ul>
+                    <li><a href="#contact" class="hover:text-koderzz-light/90 transition">Contact Us</a></li>
+                    <li><a href="#" class="hover:text-koderzz-light/90 transition">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-koderzz-light/90 transition">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="text-center mt-8 text-koderzz-light/50 text-xs">
+            &copy; 2024 Koderzz . All rights reserved.
+        </div>
+    </footer>
+
+</body>
+</html>
